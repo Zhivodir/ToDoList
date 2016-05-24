@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" ng-app="todomvc" data-framework="angularjs">
+    <head>
+        <meta charset="utf-8">
+        <title>TodoList Application</title>
+        <link rel="stylesheet" href="css/base.css">
+        <script src="js/angular/angular.js"></script>
+        <script src="js/angular-route/angular-route.js"></script>
+        <script src="js/directives/igCharLimit.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/controllers/todoCtrl.js"></script>
+        <script src="js/services/todoService.js"></script>
+        <script src="js/directives/todoFocus.js"></script>
+        <script src="js/directives/todoEscape.js"></script>
+        <style>[ng-cloak] { display: none; }</style>
+    </head>
+    <body>
+        <ng-view />
+
+        <script type="text/ng-template" id="index.html">
+            <section>
+                <div class="filters" ng-show="todos.length" ng-cloak>
+                    <ul id="filters">
+                        <li>
+                            <div class="filters_title">Filters</div>
+                        </li>
+                        <li>
+                            <a ng-class="{selected: status == 'completed'}" href="#/completed"><div class="complete">Complete</div></a>
+                        </li>
+                        <li>
+                            <a ng-class="{selected: status == 'active'}" href="#/active"><div class="active">Active</div></a>
+                        </li>
+                        <li>
+                            <a ng-class="{selected: status == ''} " href="#/"><div class="all">All</div></a>
+                        </li>
+                    </ul>
+                </div>
+                <div style="float:left; margin-left: 10px;">
+                    <section id="todoapp">
+                        <header id="header">
+                            <form id="todo-form" ng-submit="addTodo()">
+                                <input id="new-todo" placeholder="Enter your text..." char-limit="50" ng-model="newTodo" ng-disabled="saving" autocomplete="off" autofocus >
+                            </form>
+                        </header>
+
+                        <section>
+                        </section>
+
+
+                        <section id="main" ng-show="todos.length" ng-cloak>
+                            <ul id="todo-list">
+                                <li ng-repeat="todo in todos | filter:statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
+                                    <div class="view">
+                                        <input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted(todo)">
+                                        <label ng-dblclick="editTodo(todo)" char-limit="50">{{todo.title}}</label>
+                                        <button class="destroy" ng-click="removeTodo(todo)"></button>
+                                    </div>
+                                    <form ng-submit="saveEdits(todo, 'submit')">
+                                        <input class="edit" ng-model="todo.title"  ng-blur="saveEdits(todo, 'blur')" todo-escape="revertEdits(todo)"  todo-focus="todo == editedTodo">
+                                    </form>
+                                </li>
+                            </ul>
+                        </section>
+                    </section>
+                </div>
+            </section>
+        </script>
+    </body>
+</html>
