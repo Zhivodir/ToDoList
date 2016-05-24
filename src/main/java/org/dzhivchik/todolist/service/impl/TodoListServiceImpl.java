@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-/**
- * Created by 1 on 22.05.2016.
- */
+
 @Service
 @Transactional(readOnly = false)
 public class TodoListServiceImpl implements TodoListService {
